@@ -10,7 +10,7 @@ export function app(app) {
   var locked = false
   var loaded = false
 
-  for (var i = -1; i < mixins.length; i++) {
+  for (var i = -1, len = mixins.length; i < len; i++) {
     var mixin = mixins[i] ? mixins[i](emit) : app
 
     Object.keys(mixin.events || []).map(function(key) {
@@ -33,7 +33,7 @@ export function app(app) {
   return emit
 
   function update(withState) {
-    if (withState != null) {
+    if (withState) {
       repaint((state = merge(state, emit("update", withState))))
     }
   }
@@ -45,7 +45,7 @@ export function app(app) {
   }
 
   function hydrate(element, map) {
-    return element == null
+    return element === null
       ? element
       : {
           tag: element.tagName,
@@ -90,7 +90,7 @@ export function app(app) {
             )
           )
 
-          if (result == null) {
+          if (result === null) {
           } else if (typeof result === "function") {
             result = result(update)
           } else if (typeof result.then === "function") {
@@ -202,13 +202,13 @@ export function app(app) {
       if (
         value !== oldValue &&
         value !== element[name] &&
-        setElementData(element, name, value, oldValue) == null
+        setElementData(element, name, value, oldValue) === null
       ) {
         cb = data.onupdate
       }
     }
 
-    if (cb != null) {
+    if (cb) {
       cb(element)
     }
   }
@@ -222,9 +222,9 @@ export function app(app) {
   }
 
   function patch(parent, element, oldNode, node, isSVG, lastElement) {
-    if (oldNode == null) {
+    if (oldNode === null) {
       element = parent.insertBefore(createElement(node, isSVG), element)
-    } else if (node.tag != null && node.tag === oldNode.tag) {
+    } else if (node.tag && node.tag === oldNode.tag) {
       updateElementData(element, oldNode.data, node.data)
 
       isSVG = isSVG || node.tag === "svg"
@@ -242,7 +242,7 @@ export function app(app) {
         var oldChild = oldNode.children[i]
         var oldKey = getKey(oldChild)
 
-        if (null != oldKey) {
+        if (oldKey) {
           reusableChildren[oldKey] = [oldElement, oldChild]
         }
       }
@@ -265,8 +265,8 @@ export function app(app) {
 
         var reusableChild = reusableChildren[newKey] || []
 
-        if (null == newKey) {
-          if (null == oldKey) {
+        if (null === newKey) {
+          if (null === oldKey) {
             patch(element, oldElement, oldChild, newChild, isSVG)
             j++
           }
@@ -290,7 +290,7 @@ export function app(app) {
       while (i < oldLen) {
         var oldChild = oldNode.children[i]
         var oldKey = getKey(oldChild)
-        if (null == oldKey) {
+        if (null === oldKey) {
           removeElement(element, oldElements[i], oldChild.data)
         }
         i++
